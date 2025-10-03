@@ -15,7 +15,7 @@ function App() {
 
   return (
     <Router basename="/Capstone-Project">
-      <div className="relative flex min-h-screen flex-col bg-white/80 backdrop-blur">
+      <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         <Header />
         <main className="flex-1 px-4 pb-12 pt-28 sm:px-8">
           <Routes>
