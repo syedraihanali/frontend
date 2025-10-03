@@ -1,12 +1,9 @@
-// /frontend/src/pages/BookAppointmentPage.js
-
 import React, { useState, useEffect, useContext } from 'react';
-import './BookAppointmentPage.css';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../AuthContext'; // Import AuthContext
+import { AuthContext } from '../AuthContext';
 
 function BookAppointmentPage() {
-  const { auth } = useContext(AuthContext); // Access auth state
+  const { auth } = useContext(AuthContext);
   const [availableTimes, setAvailableTimes] = useState([]);
   const [uniqueDates, setUniqueDates] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
@@ -15,17 +12,16 @@ function BookAppointmentPage() {
   const [booking, setBooking] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [doctorName, setDoctorName] = useState('');
+  const [selectedTimeID, setSelectedTimeID] = useState('');
 
   const navigate = useNavigate();
 
-  // Fetch available time slots and doctors list on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch available time slots
         const timesResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/available_times`, {
           headers: {
-            'Authorization': `Bearer ${auth.token}`,
+            Authorization: `Bearer ${auth.token}`,
           },
         });
 
@@ -35,15 +31,12 @@ function BookAppointmentPage() {
 
         const timesData = await timesResponse.json();
         setAvailableTimes(timesData);
-
-        // Extract unique dates and sort them
-        const dates = [...new Set(timesData.map(slot => slot.ScheduleDate))].sort();
+        const dates = [...new Set(timesData.map((slot) => slot.ScheduleDate))].sort();
         setUniqueDates(dates);
 
-        // Fetch doctors list to get doctor's name
         const doctorsResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/doctors`, {
           headers: {
-            'Authorization': `Bearer ${auth.token}`,
+            Authorization: `Bearer ${auth.token}`,
           },
         });
 
@@ -53,10 +46,9 @@ function BookAppointmentPage() {
 
         const doctorsData = await doctorsResponse.json();
 
-        // Assuming all available times belong to the same doctor
         if (timesData.length > 0) {
           const doctorID = timesData[0].DoctorID;
-          const doctor = doctorsData.find(doc => doc.DoctorID === doctorID);
+          const doctor = doctorsData.find((doc) => doc.DoctorID === doctorID);
           setDoctorName(doctor ? doctor.FullName : 'Unknown Doctor');
         } else {
           setDoctorName('No Doctor Assigned');
@@ -73,22 +65,17 @@ function BookAppointmentPage() {
     if (auth.user && auth.token) {
       fetchData();
     } else {
-      navigate('/signin'); // Redirect to sign-in if not authenticated
+      navigate('/signin');
     }
   }, [auth.token, auth.user, navigate]);
 
-  // Handle date selection
   const handleDateChange = (e) => {
     const date = e.target.value;
     setSelectedDate(date);
-    const filteredTimes = availableTimes.filter(slot => slot.ScheduleDate === date);
+    const filteredTimes = availableTimes.filter((slot) => slot.ScheduleDate === date);
     setAvailableTimesForDate(filteredTimes);
-    // Reset selected time when date changes
     setSelectedTimeID('');
   };
-
-  // State to track selected time slot
-  const [selectedTimeID, setSelectedTimeID] = useState('');
 
   const handleTimeChange = (e) => {
     setSelectedTimeID(e.target.value);
@@ -110,7 +97,7 @@ function BookAppointmentPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.token}`,
+          Authorization: `Bearer ${auth.token}`,
         },
         body: JSON.stringify({ availableTimeID: parseInt(selectedTimeID, 10) }),
       });
@@ -123,7 +110,6 @@ function BookAppointmentPage() {
 
       setMessage({ type: 'success', text: 'Appointment booked successfully!' });
 
-      // Optionally, you can wait for a moment before redirecting
       setTimeout(() => {
         navigate('/myprofile');
       }, 2000);
@@ -135,58 +121,65 @@ function BookAppointmentPage() {
     }
   };
 
-  // Helper function to get day of the week
   const getDayOfWeek = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { weekday: 'long' });
   };
 
   return (
-    <div className="book-appointment-page">
-      <div className="booking-container">
-        <h1>Book an Appointment</h1>
+    <div className="flex min-h-[calc(100vh-7rem)] items-center justify-center px-4 py-10">
+      <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white/95 p-8 shadow-card backdrop-blur">
+        <h1 className="text-3xl font-semibold text-slate-900">Book an Appointment</h1>
 
         {doctorName && (
-          <div className="doctor-info">
-            <strong>Doctor:</strong> {doctorName}
+          <div className="mt-3 rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
+            Doctor: {doctorName}
           </div>
         )}
 
         {message.text && (
-          <div className={`message ${message.type === 'success' ? 'success' : 'error'}`}>
+          <div
+            className={`mt-4 rounded-lg px-4 py-3 text-sm font-semibold ${
+              message.type === 'success'
+                ? 'bg-emerald-100 text-emerald-700'
+                : 'bg-red-100 text-red-600'
+            }`}
+          >
             {message.text}
           </div>
         )}
 
         {loading ? (
-          <p>Loading available time slots...</p>
+          <p className="mt-6 text-sm text-slate-500">Loading available time slots...</p>
         ) : uniqueDates.length > 0 ? (
-          <form className="booking-form" onSubmit={handleSubmit}>
-            {/* Step 1: Select Date */}
-            <label htmlFor="dateSelect">Select a Date:</label>
-            <select
-              id="dateSelect"
-              value={selectedDate}
-              onChange={handleDateChange}
-              required
-            >
-              <option value="">-- Select a Date --</option>
-              {uniqueDates.map((date) => (
-                <option key={date} value={date}>
-                  {date} ({getDayOfWeek(date)})
-                </option>
-              ))}
-            </select>
+          <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+            <label className="block text-sm font-semibold text-slate-700">
+              Select a Date
+              <select
+                id="dateSelect"
+                value={selectedDate}
+                onChange={handleDateChange}
+                required
+                className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
+              >
+                <option value="">-- Select a Date --</option>
+                {uniqueDates.map((date) => (
+                  <option key={date} value={date}>
+                    {date} ({getDayOfWeek(date)})
+                  </option>
+                ))}
+              </select>
+            </label>
 
-            {/* Step 2: Select Time Slot */}
             {selectedDate && (
-              <>
-                <label htmlFor="timeSelect">Select a Time Slot:</label>
+              <label className="block text-sm font-semibold text-slate-700">
+                Select a Time Slot
                 <select
                   id="timeSelect"
                   value={selectedTimeID}
                   onChange={handleTimeChange}
                   required
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
                 >
                   <option value="">-- Select a Time Slot --</option>
                   {availableTimesForDate.map((slot) => (
@@ -195,15 +188,19 @@ function BookAppointmentPage() {
                     </option>
                   ))}
                 </select>
-              </>
+              </label>
             )}
 
-            <button type="submit" disabled={booking}>
+            <button
+              type="submit"
+              disabled={booking}
+              className="w-full rounded-lg bg-brand-primary px-4 py-3 text-sm font-semibold text-white shadow hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+            >
               {booking ? 'Booking...' : 'Book Appointment'}
             </button>
           </form>
         ) : (
-          <p>No available time slots at the moment. Please check back later.</p>
+          <p className="mt-6 text-sm text-slate-500">No available time slots at the moment. Please check back later.</p>
         )}
       </div>
     </div>

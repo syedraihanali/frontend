@@ -1,9 +1,5 @@
-// /frontend/src/pages/RegisterPage.js
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './RegisterPage.css';
-import '../common.css';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -13,9 +9,9 @@ function RegisterPage() {
     phoneNumber: '',
     email: '',
     password: '',
-    address:'',
+    address: '',
     selectedDoctor: '',
-    termsAccepted: false, // Added to track checkbox
+    termsAccepted: false,
   });
 
   const [doctorList, setDoctorList] = useState([]);
@@ -25,7 +21,6 @@ function RegisterPage() {
 
   const navigate = useNavigate();
 
-  // Fetch the list of doctors from the backend when the component mounts
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/api/doctors`)
       .then((response) => {
@@ -47,27 +42,26 @@ function RegisterPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleCheckboxChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       termsAccepted: e.target.checked,
-    });
+    }));
   };
 
   const handleDoctorSelection = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       selectedDoctor: e.target.value,
-    });
+    }));
   };
 
-  // Validate form fields
   const isFormValid =
     formData.fullName &&
     formData.birthdate &&
@@ -88,7 +82,6 @@ function RegisterPage() {
       return;
     }
 
-    // Prepare the data to be sent to the backend
     const payload = {
       fullName: formData.fullName,
       birthdate: formData.birthdate,
@@ -114,11 +107,10 @@ function RegisterPage() {
         }
         return data;
       })
-      .then((data) => {
+      .then(() => {
         setRegistrationSuccess(true);
-        // Redirect to sign-in page after a delay
         setTimeout(() => {
-          navigate('/signin'); // Changed from '/myprofile' to '/signin'
+          navigate('/signin');
         }, 2000);
       })
       .catch((err) => {
@@ -128,44 +120,50 @@ function RegisterPage() {
   };
 
   return (
-    <div className="register-page">
-      <div className="form-container">
-        <h1>New Patient Registration Form</h1>
-        <h2>Welcome to Destination Health</h2>
-        {error && <div className="error-message">{error}</div>}
+    <div className="flex min-h-[calc(100vh-7rem)] items-center justify-center px-4 py-10">
+      <div className="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white/95 p-10 shadow-card backdrop-blur">
+        <h1 className="text-3xl font-semibold text-slate-900">New Patient Registration Form</h1>
+        <h2 className="mt-2 text-lg text-slate-600">Welcome to Destination Health</h2>
+        {error && <div className="mt-4 rounded-lg bg-red-100 px-4 py-3 text-sm font-medium text-red-600">{error}</div>}
         {registrationSuccess && (
-          <div className="success-message">
+          <div className="mt-4 rounded-lg bg-emerald-100 px-4 py-3 text-sm font-medium text-emerald-700">
             Registration successful! Redirecting to sign-in...
           </div>
         )}
-        <form className="registration-form" onSubmit={handleSubmit}>
-          <label>
-            Full Name:
+
+        <form className="mt-6 grid gap-4 sm:grid-cols-2" onSubmit={handleSubmit}>
+          <label className="flex flex-col text-sm font-semibold text-slate-700 sm:col-span-2">
+            Full Name
             <input
               type="text"
               name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
               required
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
             />
           </label>
-          <label>
-            Birthdate:
+
+          <label className="flex flex-col text-sm font-semibold text-slate-700">
+            Birthdate
             <input
               type="date"
               name="birthdate"
               value={formData.birthdate}
               onChange={handleInputChange}
               required
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
             />
           </label>
-          <label>
-            Gender:
+
+          <label className="flex flex-col text-sm font-semibold text-slate-700">
+            Gender
             <select
               name="gender"
               value={formData.gender}
               onChange={handleInputChange}
               required
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
             >
               <option value="">-- Please Select Gender --</option>
               <option value="Male">Male</option>
@@ -174,8 +172,9 @@ function RegisterPage() {
               <option value="Prefer not to say">Prefer not to say</option>
             </select>
           </label>
-          <label>
-            Phone Number:
+
+          <label className="flex flex-col text-sm font-semibold text-slate-700">
+            Phone Number
             <input
               type="tel"
               name="phoneNumber"
@@ -184,20 +183,24 @@ function RegisterPage() {
               required
               pattern="[0-9]{10}"
               placeholder="e.g., 1234567890"
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
             />
           </label>
-          <label>
-            Email:
+
+          <label className="flex flex-col text-sm font-semibold text-slate-700">
+            Email
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
               required
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
             />
           </label>
-          <label>
-            Password:
+
+          <label className="flex flex-col text-sm font-semibold text-slate-700">
+            Password
             <input
               type="password"
               name="password"
@@ -206,29 +209,34 @@ function RegisterPage() {
               required
               minLength="6"
               placeholder="Minimum 6 characters"
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
             />
           </label>
-          <label>
-            Address :
+
+          <label className="flex flex-col text-sm font-semibold text-slate-700 sm:col-span-2">
+            Address
             <input
               type="text"
               name="address"
               value={formData.address}
               onChange={handleInputChange}
               required
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
             />
           </label>
-          <label>
-            Select Doctor:
-            <div className="custom-select">
+
+          <label className="flex flex-col text-sm font-semibold text-slate-700 sm:col-span-2">
+            Select Doctor
+            <div className="mt-2">
               {loadingDoctors ? (
-                <p>Loading doctors...</p>
+                <p className="text-sm text-slate-500">Loading doctors...</p>
               ) : doctorList.length > 0 ? (
                 <select
                   name="selectedDoctor"
                   value={formData.selectedDoctor}
                   onChange={handleDoctorSelection}
                   required
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-accent"
                 >
                   <option value="">-- Please Select a Doctor --</option>
                   {doctorList.map((doctor) => (
@@ -237,32 +245,38 @@ function RegisterPage() {
                       value={doctor.DoctorID}
                       disabled={doctor.CurrentPatientNumber >= doctor.MaxPatientNumber}
                     >
-                      {doctor.FullName} (
-                      {doctor.CurrentPatientNumber}/{doctor.MaxPatientNumber} Patients)
-                      {doctor.CurrentPatientNumber >= doctor.MaxPatientNumber
-                        ? ' - Full'
-                        : ''}
+                      {doctor.FullName} ({doctor.CurrentPatientNumber}/{doctor.MaxPatientNumber} Patients)
+                      {doctor.CurrentPatientNumber >= doctor.MaxPatientNumber ? ' - Full' : ''}
                     </option>
                   ))}
                 </select>
               ) : (
-                <p>No doctors available at the moment.</p>
+                <p className="text-sm text-slate-500">No doctors available at the moment.</p>
               )}
             </div>
           </label>
-          <label className="terms-checkbox">
+
+          <label className="sm:col-span-2 flex items-start gap-3 text-sm text-slate-700">
             <input
               type="checkbox"
               name="termsAccepted"
-              checked={formData.termsAccepted || false} // Ensure default is false
+              checked={formData.termsAccepted || false}
               onChange={handleCheckboxChange}
               required
+              className="mt-1 h-5 w-5 rounded border-slate-300 text-brand-primary focus:ring-brand-accent"
             />
-            I accept the terms and conditions
+            <span className="font-medium">I accept the terms and conditions</span>
           </label>
-          <button type="submit" disabled={!isFormValid || loadingDoctors}>
-            Register
-          </button>
+
+          <div className="sm:col-span-2">
+            <button
+              type="submit"
+              disabled={!isFormValid || loadingDoctors}
+              className="w-full rounded-lg bg-brand-primary px-4 py-3 text-sm font-semibold text-white shadow hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+            >
+              Register
+            </button>
+          </div>
         </form>
       </div>
     </div>
