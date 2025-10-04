@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../AuthContext';
-import { API_URL } from '../config';
 
 function StaffPortal() {
   const { auth } = useContext(AuthContext);
@@ -12,7 +11,7 @@ function StaffPortal() {
     const getUpcomingAppointments = async () => {
       try {
         const res = await fetch(
-          `${API_URL}/api/patients/${auth.user.id}/upcomingAppointments`,
+          `${process.env.REACT_APP_API_URL}/api/patients/${auth.user.id}/upcomingAppointments`,
           {
             headers: {
               Authorization: `Bearer ${auth.token}`,

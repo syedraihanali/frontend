@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
-import { API_URL } from '../config';
 
 function PatientProfile() {
   const { auth } = useContext(AuthContext);
@@ -13,7 +12,7 @@ function PatientProfile() {
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-        const patientResponse = await fetch(`${API_URL}/api/patients/${auth.user.id}`, {
+        const patientResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/patients/${auth.user.id}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`,
           },
@@ -27,7 +26,7 @@ function PatientProfile() {
         setPatient(patientData);
 
         const upcomingResponse = await fetch(
-          `${API_URL}/api/patients/${auth.user.id}/upcomingAppointments`,
+          `${process.env.REACT_APP_API_URL}/api/patients/${auth.user.id}/upcomingAppointments`,
           {
             headers: {
               Authorization: `Bearer ${auth.token}`,
@@ -43,7 +42,7 @@ function PatientProfile() {
         setUpcomingAppointments(upcomingData);
 
         const historyResponse = await fetch(
-          `${API_URL}/api/patients/${auth.user.id}/appointmentHistory`,
+          `${process.env.REACT_APP_API_URL}/api/patients/${auth.user.id}/appointmentHistory`,
           {
             headers: {
               Authorization: `Bearer ${auth.token}`,
