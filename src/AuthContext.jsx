@@ -1,12 +1,28 @@
 // /frontend/src/AuthContext.js
 
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; 
-//import jwtDecode from 'jwt-decode';
-
+import { jwtDecode } from 'jwt-decode';
 
 // Create the context
 export const AuthContext = createContext();
+
+const normalizeUser = (user) => {
+  if (!user) return null;
+  const firstName =
+    user.firstName ||
+    user.given_name ||
+    user.name?.split(' ')[0] ||
+    user.fullName?.split(' ')[0] ||
+    (user.email ? user.email.split('@')[0] : undefined);
+
+  const avatarUrl = user.avatarUrl || user.photoURL || user.picture || null;
+
+  return {
+    ...user,
+    ...(firstName ? { firstName } : {}),
+    ...(avatarUrl ? { avatarUrl } : {}),
+  };
+};
 
 // Create a provider component
 export const AuthProvider = ({ children }) => {
@@ -29,11 +45,12 @@ export const AuthProvider = ({ children }) => {
         } else {
           setAuth({
             token,
-            user: {
+            user: normalizeUser({
               id: decoded.id,
               email: decoded.email,
-              // Add other user info if needed
-            },
+              firstName: decoded.firstName || decoded.given_name,
+              avatarUrl: decoded.avatarUrl || decoded.picture,
+            }),
           });
         }
       } catch (err) {
@@ -48,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', token);
     setAuth({
       token,
-      user,
+      user: normalizeUser(user),
     });
   };
 
