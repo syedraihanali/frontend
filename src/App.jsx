@@ -4,8 +4,7 @@ import HomePage from './pages/HomePage';
 import RegisterPage from './pages/RegisterPage';
 import PatientProfile from './pages/PatientProfile';
 import SignInPage from './pages/SignInPage';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
+import Header from './components/Header';
 import BookAppointmentPage from './pages/BookAppointmentPage';
 import StaffPortal from './pages/StaffPortal';
 import { AuthContext } from './AuthContext';
@@ -16,12 +15,9 @@ function App() {
 
   return (
     <Router basename="/Capstone-Project">
-      <div className="relative flex min-h-screen flex-col">
-        <div className="pointer-events-none fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-white/70 dark:bg-white/60" />
-        </div>
+      <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         <Header />
-        <main className="flex-1 px-4 pb-16 pt-28 sm:px-6 lg:px-10">
+        <main className="flex-1 px-4 pb-12 pt-28 sm:px-8">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -45,7 +41,6 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
-        <Footer />
       </div>
     </Router>
   );
