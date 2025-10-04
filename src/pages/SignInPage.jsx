@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
-import { API_URL } from '../config';
 
 function SignInPage() {
   const [formData, setFormData] = useState({
@@ -23,6 +22,8 @@ function SignInPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMessage('');
+
+    const API_URL = process.env.REACT_APP_API_URL;
 
     fetch(`${API_URL}/api/signin`, {
       method: 'POST',
