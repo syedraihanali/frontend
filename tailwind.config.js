@@ -1,19 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Segoe UI'", 'system-ui', 'sans-serif'],
+        sans: ['\'Inter\'', 'system-ui', 'sans-serif'],
       },
       colors: {
         brand: {
-          primary: '#1D4ED8',
-          accent: '#0EA5E9',
+          primary: '#12a97b',
+          dark: '#0c7a56',
+          accent: '#3dd6a7',
+          secondary: '#e8f7f0',
         },
       },
       boxShadow: {
-        card: '0 10px 25px -15px rgba(15, 23, 42, 0.3)',
+        glass: '0 30px 80px -40px rgba(15, 157, 88, 0.45)',
+        soft: '0 18px 50px -35px rgba(15, 23, 42, 0.4)',
+      },
+      backdropBlur: {
+        xs: '4px',
       },
     },
   },

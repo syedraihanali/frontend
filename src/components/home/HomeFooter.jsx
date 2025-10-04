@@ -1,53 +1,99 @@
 import React from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
-const links = [
+const footerLinks = [
   {
-    title: 'Services',
-    items: ['Find a doctor', 'Patient portal', 'Telehealth', 'Care programs'],
-  },
-  {
-    title: 'Company',
-    items: ['About us', 'Careers', 'Press', 'Contact'],
+    title: 'Explore',
+    items: [
+      { label: 'Book an appointment', to: '/book-appointment' },
+      { label: 'Services', to: '/services' },
+      { label: 'Get reports', to: '/reports' },
+      { label: 'About us', to: '/about-us' },
+    ],
   },
   {
     title: 'Support',
-    items: ['Help center', 'Privacy policy', 'Terms of use', 'Accessibility'],
+    items: [
+      { label: 'Patient help center', to: '/register' },
+      { label: 'Staff portal', to: '/staff-portal' },
+      { label: 'Privacy policy', to: '#' },
+      { label: 'Accessibility', to: '#' },
+    ],
+  },
+  {
+    title: 'Contact',
+    items: [
+      { label: 'Call 1-800-123-456', to: 'tel:1800123456', external: true },
+      { label: 'Email care@destinationhealth.com', to: 'mailto:care@destinationhealth.com', external: true },
+      { label: 'Visit 221B Harbor Street, Seattle', to: '#location' },
+    ],
   },
 ];
 
 function HomeFooter() {
   return (
-    <footer className="mt-16 rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-card shadow-blue-100/40">
-      <div className="grid gap-8 lg:grid-cols-[1.5fr_2fr]">
-        <div className="space-y-4">
-          <h3 className="text-2xl font-semibold text-slate-900">Destination Health</h3>
-          <p className="text-sm leading-relaxed text-slate-600">
-            Comprehensive, coordinated care starts here. Book appointments, access secure records, and stay connected to your providers from anywhere.
-          </p>
-          <div className="flex items-center gap-3 text-slate-400">
-            <a href="https://twitter.com" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 hover:border-brand-primary hover:text-brand-primary" aria-label="Twitter">
+    <footer className="rounded-[32px] border border-white/60 bg-white/80 p-10 shadow-glass backdrop-blur-xl">
+      <div className="grid gap-10 lg:grid-cols-[1.6fr_2fr]">
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-2xl font-semibold text-brand-dark">Destination Health</h3>
+            <p className="mt-3 max-w-md text-sm text-slate-600">
+              Seamless booking, coordinated care teams, and secure records—designed for modern health journeys.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 text-brand-dark">
+            <a
+              href="https://twitter.com"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-primary/30 bg-white/70 transition hover:bg-brand-primary/20"
+              aria-label="Twitter"
+            >
               <FaTwitter />
             </a>
-            <a href="https://facebook.com" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 hover:border-brand-primary hover:text-brand-primary" aria-label="Facebook">
+            <a
+              href="https://facebook.com"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-primary/30 bg-white/70 transition hover:bg-brand-primary/20"
+              aria-label="Facebook"
+            >
               <FaFacebookF />
             </a>
-            <a href="https://instagram.com" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 hover:border-brand-primary hover:text-brand-primary" aria-label="Instagram">
+            <a
+              href="https://instagram.com"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-primary/30 bg-white/70 transition hover:bg-brand-primary/20"
+              aria-label="Instagram"
+            >
               <FaInstagram />
             </a>
-            <a href="https://linkedin.com" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 hover:border-brand-primary hover:text-brand-primary" aria-label="LinkedIn">
+            <a
+              href="https://linkedin.com"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-primary/30 bg-white/70 transition hover:bg-brand-primary/20"
+              aria-label="LinkedIn"
+            >
               <FaLinkedinIn />
             </a>
           </div>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-3">
-          {links.map((column) => (
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {footerLinks.map((column) => (
             <div key={column.title} className="space-y-3">
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-slate-500">{column.title}</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-500">{column.title}</h4>
               <ul className="space-y-2 text-sm text-slate-600">
                 {column.items.map((item) => (
-                  <li key={item} className="transition hover:text-brand-primary">{item}</li>
+                  <li key={item.label}>
+                    {item.external ? (
+                      <a
+                        href={item.to}
+                        className="transition hover:text-brand-dark"
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <Link to={item.to} className="transition hover:text-brand-dark">
+                        {item.label}
+                      </Link>
+                    )}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -55,8 +101,9 @@ function HomeFooter() {
         </div>
       </div>
 
-      <div className="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500">
-        © {new Date().getFullYear()} Destination Health. All rights reserved.
+      <div className="mt-10 flex flex-col gap-3 border-t border-white/70 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <p>© {new Date().getFullYear()} Destination Health. All rights reserved.</p>
+        <p className="text-slate-400">Secured with HIPAA-compliant infrastructure.</p>
       </div>
     </footer>
   );

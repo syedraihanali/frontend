@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react';
 import App from './App';
 import { AuthProvider } from './AuthContext';
 
-test('renders Healthcare made easy slogan', () => {
+test('renders booking hero headline', () => {
   window.history.pushState({}, 'Home', '/Capstone-Project/');
   render(
     <AuthProvider>
       <App />
     </AuthProvider>,
   );
-  const sloganElement = screen.getByText(/Healthcare made easy\./i);
-  expect(sloganElement).toBeInTheDocument();
+  const headlineElement = screen.getByRole('heading', { name: /Book an appointment/i });
+  expect(headlineElement).toBeInTheDocument();
 });

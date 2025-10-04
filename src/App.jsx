@@ -9,19 +9,23 @@ import BookAppointmentPage from './pages/BookAppointmentPage';
 import StaffPortal from './pages/StaffPortal';
 import { AuthContext } from './AuthContext';
 import AboutUs from './pages/AboutUs';
+import ServicesPage from './pages/ServicesPage';
+import ReportsPage from './pages/ReportsPage';
 
 function App() {
   const { auth } = useContext(AuthContext);
 
   return (
     <Router basename="/Capstone-Project">
-      <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-brand-secondary via-white to-emerald-50">
         <Header />
         <main className="flex-1 px-4 pb-12 pt-28 sm:px-8">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/reports" element={<ReportsPage />} />
             <Route
               path="/signin"
               element={!auth.token ? <SignInPage /> : <Navigate to="/myprofile" />}
