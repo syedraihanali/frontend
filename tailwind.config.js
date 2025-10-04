@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     extend: {
@@ -8,12 +9,15 @@ module.exports = {
       },
       colors: {
         brand: {
-          primary: '#1D4ED8',
-          accent: '#0EA5E9',
+          primary: '#1B2A3D',
+          accent: '#8C95A6',
+          secondary: '#B8A47A',
+          surface: '#F7F7F5',
+          darkSurface: '#E9ECEF',
         },
       },
       boxShadow: {
-        card: '0 10px 25px -15px rgba(15, 23, 42, 0.3)',
+        card: '0 18px 40px -20px rgba(15, 23, 42, 0.25)',
       },
     },
   },
