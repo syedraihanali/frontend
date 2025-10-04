@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ function RegisterPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/doctors`)
+    fetch(`${API_URL}/api/doctors`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch doctors');
@@ -93,7 +94,7 @@ function RegisterPage() {
       selectedDoctor: formData.selectedDoctor,
     };
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/register`, {
+    fetch(`${API_URL}/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

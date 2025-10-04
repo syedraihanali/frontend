@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Destination Health Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is the frontend for the Destination Health platform. It is built with React, Tailwind CSS, and bundled with [Vite](https://vite.dev).
+
+## Prerequisites
+
+- Node.js 18 or later (Node 22 LTS recommended)
+- npm 8 or later
 
 ## Available Scripts
 
-In the project directory, you can run:
+### `npm install`
+Installs all project dependencies. The installation uses npm overrides to ensure patched versions of transitive packages that previously triggered security advisories.
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `npm run dev`
+Starts the Vite development server on [http://localhost:3000](http://localhost:3000) with hot module replacement.
 
 ### `npm run build`
+Builds the application for production. The optimized assets are output to the `dist` directory and are ready to be deployed to GitHub Pages using the configured base path.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run preview`
+Serves the production build locally so you can verify the output before deploying.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm test`
+Runs the test suite with [Vitest](https://vitest.dev) in a JSDOM environment. Coverage reports are generated with `npm run coverage`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run deploy`
+Deploys the contents of the `dist` directory to GitHub Pages. The `predeploy` hook automatically builds the project before publishing.
 
-### `npm run eject`
+## Environment Variables
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Create a `.env` file (or `.env.local`) to provide the backend API base URL:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+VITE_API_URL=https://your-api-host.example.com
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Tailwind CSS
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The Tailwind CSS configuration scans `index.html` and all files under `src/` for class names. You can extend the design system in `tailwind.config.js`.
 
-## Learn More
+## Security Notes
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- The build toolchain has been migrated from `react-scripts` to Vite to remove known vulnerabilities from `webpack-dev-server` and related packages.
+- npm overrides keep `esbuild`, `postcss`, and `nth-check` on patched versions to avoid audit warnings.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Testing
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The project currently includes a sample test located at `src/App.test.jsx`. Add additional tests alongside your components under `src/`.
